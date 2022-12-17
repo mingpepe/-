@@ -5,6 +5,7 @@ URL = 'https://ap.ece.moe.edu.tw/webecems/pubSearch.aspx'
 TARGET_CITY = "09"
 TARGET_AREA = "428"
 
+
 def get_data(text, keyword):
     keyword += '|'
     start_idx = text.index(keyword) + len(keyword)
@@ -70,6 +71,24 @@ def in_session(s):
     response = s.post(URL, data=dic)
     with open("result.html", "w", encoding="utf8") as f:
         f.write(response.text)
+
+    # Save verification code
+    soup = BeautifulSoup(response.text, 'html.parser')
+    dic.update({"__EVENTVALIDATION": get_data(response.text, '__EVENTVALIDATION'),
+                '__VIEWSTATE': get_data(response.text, '__VIEWSTATE'), })
+    idx = 0
+    while True:
+        _id = f'GridView1_imgValidateCode_{idx}'
+        idx += 1
+        img = soup.find(id=_id)
+        if img:
+            url = 'https://ap.ece.moe.edu.tw/webecems/' + img['src']
+            reponse = s.get(url)
+            with open(f'{_id}.png', "wb") as f:
+                f.write(reponse.content)
+        else:
+            break
+
 
 def main():
     with requests.Session() as s:
