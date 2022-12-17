@@ -10,4 +10,4 @@ def preprocess(image):
 def image_to_string(path):
     image = Image.open(path)
     image = preprocess(image)
-    pytesseract.image_to_string(image)
+    return pytesseract.image_to_string(image)
