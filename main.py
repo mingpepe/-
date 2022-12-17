@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-URL = 'https://ap.ece.moe.edu.tw/webecems/pubSearch.aspx'
+URL_BASE = 'https://ap.ece.moe.edu.tw/webecems/'
+URL = URL_BASE + 'pubSearch.aspx'
 TARGET_CITY = "09"
 TARGET_AREA = "428"
 
@@ -82,7 +83,7 @@ def in_session(s):
         idx += 1
         img = soup.find(id=_id)
         if img:
-            url = 'https://ap.ece.moe.edu.tw/webecems/' + img['src']
+            url = URL_BASE + img['src']
             reponse = s.get(url)
             with open(f'{_id}.png', "wb") as f:
                 f.write(reponse.content)
@@ -101,7 +102,7 @@ def in_session(s):
             start = code.index(PREVFIX) + len(PREVFIX)
             end = code.index(POSTFIX)
             _url = code[start:end]
-            _url = 'https://ap.ece.moe.edu.tw/webecems/' + _url + '&v=verification_code'
+            _url = URL_BASE + _url + '&v=verification_code'
         else:
             break
 
