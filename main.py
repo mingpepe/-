@@ -89,6 +89,22 @@ def in_session(s):
         else:
             break
 
+    PREVFIX = 'popwin=window.open(\'./'
+    POSTFIX = '&'
+    idx = 0
+    while True:
+        _id = f'GridView1_divChgList_{idx}'
+        idx += 1
+        div = soup.find(id=_id)
+        if div:
+            code = div.find('a')['onclick']
+            start = code.index(PREVFIX) + len(PREVFIX)
+            end = code.index(POSTFIX)
+            _url = code[start:end]
+            _url = 'https://ap.ece.moe.edu.tw/webecems/' + _url + '&v=verification_code'
+        else:
+            break
+
 
 def main():
     with requests.Session() as s:
