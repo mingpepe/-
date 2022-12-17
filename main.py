@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from ocr import image_to_string
 
 URL_BASE = 'https://ap.ece.moe.edu.tw/webecems/'
 URL = URL_BASE + 'pubSearch.aspx'
